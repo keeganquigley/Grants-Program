@@ -1,4 +1,4 @@
-name: KYB Verification Reminder (On First Approval - Static Link)
+name: KYB Verification Reminder
 
 on:
   pull_request_review:
@@ -7,7 +7,7 @@ on:
 jobs:
   kyb_reminder:
     runs-on: ubuntu-latest
-    # if: github.event.review.state == 'approved' && needs['check_for_approvals'].outcome == 'success'
+    if: github.event.review.state == 'approved' && needs['check_for_approvals'].outcome == 'success'
 
     steps:
       - name: Checkout code
@@ -42,13 +42,14 @@ jobs:
             return context.payload.pull_request.user.login
 
       - name: Post comment
+        if: steps.pr_author?.outputs?.result # Conditional execution of the step
         uses: actions/github-script@v6
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const prNumber = context.payload.pull_request.number;
-            const author = steps.pr_author.outputs.result;
-            const sumsubLink = 'https://in.sumsub.com/idensic/l/#/uni_JRqwo72Y5AjXaRDO';
+            const author = steps.pr_author?.outputs?.result; // Optional chaining (for safety)
+            const sumsubLink = 'YOUR_STATIC_SUMSUB_LINK_HERE'; // **REPLACE WITH YOUR ACTUAL LINK**
 
             const message = `👋 Hi @${author}, thanks for submitting your application!
 
