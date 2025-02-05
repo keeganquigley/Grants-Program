@@ -1,4 +1,4 @@
-name: KYB Verification Reminder
+name: KYB Verification Reminder (On First Approval - Static Link)
 
 on:
   pull_request_review:
@@ -34,24 +34,15 @@ jobs:
                 return 'success'; // Continue if comment does not exist
             }
 
-      - name: Get PR author
-        id: pr_author
-        uses: actions/github-script@v6
-        with:
-          script: |
-            return context.payload.pull_request.user.login
-
       - name: Post comment
-        if: steps.pr_author?.outputs?.result # Conditional execution of the step
         uses: actions/github-script@v6
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const prNumber = context.payload.pull_request.number;
-            const author = steps.pr_author?.outputs?.result; // Optional chaining (for safety)
-            const sumsubLink = 'YOUR_STATIC_SUMSUB_LINK_HERE'; // **REPLACE WITH YOUR ACTUAL LINK**
+            const sumsubLink = 'https://in.sumsub.com/idensic/l/#/uni_JRqwo72Y5AjXaRDO';
 
-            const message = `👋 Hi @${author}, thanks for submitting your application!
+            const message = `👋 Thanks for submitting your application!
 
             To complete the process, please verify your organization's information using our KYB/KYC provider, SumSub.  You can access the verification form here: [${sumsubLink}](${sumsubLink})
 
