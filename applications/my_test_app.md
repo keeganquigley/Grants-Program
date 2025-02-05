@@ -25,7 +25,6 @@ Please provide the following:
 - If the name of your project is not descriptive, a tagline (one sentence summary).
 - A brief description of your project.
 - An indication of how your project relates to / integrates into Substrate / Polkadot / Kusama.
-- An indication of why your team is interested in creating this project.
 
 ### Project Details
 
