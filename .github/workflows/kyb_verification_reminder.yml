@@ -7,7 +7,7 @@ on:
 jobs:
   kyb_reminder:
     runs-on: ubuntu-latest
-    if: github.event.review.state == 'approved' && needs['check_for_approvals'].outcome == 'success'
+    # if: github.event.review.state == 'approved' && needs['check_for_approvals'].outcome == 'success'
 
     steps:
       - name: Checkout code
