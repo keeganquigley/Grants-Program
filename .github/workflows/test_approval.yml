@@ -1,0 +1,21 @@
+name: Test Approval
+
+on:
+  pull_request_review:
+    types: [submitted]
+
+jobs:
+  test_approval:
+    runs-on: ubuntu-latest
+    if: github.event.review.state == 'approved'
+    steps:
+      - name: Debug Event Context
+        uses: actions/github-script@v6
+        with:
+          github-token: ${{ secrets.GITHUB_TOKEN }}
+          script: |
+            console.log(JSON.stringify(context.payload, null, 2));
+
+      - name: Echo Approval
+        if: github.event.review.state == 'approved'
+        run: echo "Approval detected!"
