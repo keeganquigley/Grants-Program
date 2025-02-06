@@ -142,7 +142,7 @@ Below we provide an **example roadmap**. In the descriptions, it should be clear
 | 0e. | Article | We will publish an **article**/workshop that explains [...] (what was done/achieved as part of the grant). (Content, language, and medium should reflect your target audience described above.) |
 | 1. | Substrate module: X | We will create a Substrate module that will... (Please list the functionality that will be implemented for the first milestone. You can refer to details provided in previous sections.) |
 | 2. | Substrate module: Y | The Y Substrate module will... |
-| 3. | Substrate module: Z | The Z Substrate module will... |
+| 3. | Substrate module: Z | The Z Substrate module will... |  more stuff
 | 4. | Substrate chain | Modules X, Y & Z of our custom chain will interact in such a way... (Please describe the deliverable here as detailed as possible) |
 | 5. | Library: ABC | We will deliver a JS library that will implement the functionality described under "ABC Library" |
 | 6. | Smart contracts: ... | We will deliver a set of ink! smart contracts that will...
