@@ -7,7 +7,7 @@ on:
 jobs:
   kyb_reminder:
     runs-on: ubuntu-latest
-    # if: github.event.review.state == 'approved' && needs['check_for_approvals'].outcome == 'success'
+    if: github.event.review.state == 'approved'
     
     steps:
       - name: Checkout code
@@ -29,12 +29,12 @@ jobs:
             const kyCommentExists = comments.data.some(comment => comment.body.includes('To complete the process, please verify your organization\'s information'));
 
             if (kyCommentExists) {
-                return 'failure'; // Fail the check if comment exists
-            } else {
-                return 'success'; // Continue if comment does not exist
+                console.log('KYB comment already exists. Skipping.');
+                process.exit(1); // Fail the step if comment exists
             }
 
       - name: Post comment
+        if: needs.check_for_approvals.outcome == 'success'
         uses: actions/github-script@v6
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
