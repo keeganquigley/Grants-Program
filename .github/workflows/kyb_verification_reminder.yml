@@ -34,7 +34,7 @@ jobs:
             }
 
       - name: Post comment
-        if: needs.check_for_approvals.outcome == 'success'
+        if: always() && needs.check_for_approvals.outcome == 'success'
         uses: actions/github-script@v6
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
