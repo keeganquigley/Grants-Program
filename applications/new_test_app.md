@@ -7,7 +7,7 @@
 - **Team Name:** Testguy
 - **Payment Details:**
   - **DOT**: 
-  - **Payment**:
+  - **Payment**: 50% DOT
 - **[Level](https://grants.web3.foundation/docs/Introduction/levels):** 1
 
 > [!IMPORTANT]
