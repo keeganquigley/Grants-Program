@@ -29,7 +29,9 @@ jobs:
             const kyCommentExists = comments.data.some(comment => comment.body.includes('To complete the process, please verify your organization\'s information'));
 
             if (kyCommentExists) {
-                exit 1; // Fail the check if comment exists
+                return 'failure'; // Fail the check if comment exists
+            } else {
+                return 'success'; // Continue if comment does not exist
             }
 
       - name: Post comment
