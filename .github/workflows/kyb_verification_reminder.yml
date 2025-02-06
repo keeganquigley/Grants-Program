@@ -7,8 +7,8 @@ on:
 jobs:
   kyb_reminder:
     runs-on: ubuntu-latest
-    if: github.event.review.state == 'approved' && needs['check_for_approvals'].outcome == 'success'
-
+    if: github.event.review.state == 'approved'
+    
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
@@ -29,32 +29,25 @@ jobs:
             const kyCommentExists = comments.data.some(comment => comment.body.includes('To complete the process, please verify your organization\'s information'));
 
             if (kyCommentExists) {
-                return 'failure'; // Fail the check if comment exists
-            } else {
-                return 'success'; // Continue if comment does not exist
+                process.exit(1); // Fail the step if comment exists
             }
 
-      - name: Get PR author
-        id: pr_author
-        uses: actions/github-script@v6
-        with:
-          script: |
-            return context.payload.pull_request.user.login
-
       - name: Post comment
+        if: always() && github.steps.check_for_approvals.outcome == 'success'
+        
         uses: actions/github-script@v6
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
           script: |
             const prNumber = context.payload.pull_request.number;
-            const author = steps.pr_author.outputs.result;
-            const sumsubLink = 'https://in.sumsub.com/idensic/l/#/uni_JRqwo72Y5AjXaRDO';
+            const kyb = 'https://in.sumsub.com/idensic/l/#/uni_JRqwo72Y5AjXaRDO';
+            const kyc = 'https://in.sumsub.com/idensic/l/#/uni_mjcB05gJZfh8dbr7';
 
-            const message = `👋 Hi @${author}, thanks for submitting your application!
+            const message = `👋 Thanks for submitting your application!
 
-            To complete the process, please verify your organization's information using our KYB/KYC provider, SumSub.  You can access the verification form here: [${sumsubLink}](${sumsubLink})
+            To complete the process, please [verify your organization's information using our [KYB](${kyb}) (in case you're applying as an entity) and [KYC](${kyc}) (in case you are applying as an individual) workflows.
 
-            Please complete this step as soon as possible.  If you have any questions, please don't hesitate to ask.`;
+            Please complete this step as soon as possible. If you have any questions, please don't hesitate to ask.`;
 
             github.rest.issues.createComment({
               issue_number: prNumber,
