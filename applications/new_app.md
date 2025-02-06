@@ -65,7 +65,7 @@ Help us locate your project in the Polkadot/Substrate/Kusama landscape and what 
 ### Team members
 
 - Name of team leader
-- Names of team members
+- Names of team members iyf,kug.kjlg.lih
 
 ### Contact
 
