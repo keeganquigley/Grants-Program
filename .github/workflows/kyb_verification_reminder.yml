@@ -33,7 +33,7 @@ jobs:
             }
 
       - name: Post comment
-        # if: always() && github.steps.check_for_approvals.outcome == 'success'
+        if: always() && github.steps.check_for_approvals.outcome == 'success'
         
         uses: actions/github-script@v6
         with:
