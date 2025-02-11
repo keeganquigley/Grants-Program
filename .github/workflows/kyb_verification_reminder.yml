@@ -1,40 +1,17 @@
-name: KYB Verification Reminder (On First Approval - Static Link)
+name: KYB Verification Reminder (On PR Submission)
 
 on:
-  pull_request_review:
-    types: [submitted]
+  pull_request:
+    types: [opened]
 
 jobs:
-  approved:
+  kyb_reminder:
     runs-on: ubuntu-latest
-    if: github.event.review.state == 'approved'
-    
     steps:
       - name: Checkout code
         uses: actions/checkout@v3
 
-      - name: Check for existing comment
-        id: check_for_approvals
-        uses: actions/github-script@v6
-        with:
-          github-token: ${{ secrets.GITHUB_TOKEN }}
-          script: |
-            const prNumber = context.payload.pull_request.number;
-            const comments = await github.rest.issues.listComments({
-              issue_number: prNumber,
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-            });
-
-            const kyCommentExists = comments.data.some(comment => comment.body.includes('To complete the process, please verify your organization\'s information'));
-
-            if (kyCommentExists) {
-                process.exit(1); // Fail the step if comment exists
-            }
-
       - name: Post comment
-        if: always() && github.steps.check_for_approvals.outcome == 'success'
-        
         uses: actions/github-script@v6
         with:
           github-token: ${{ secrets.GITHUB_TOKEN }}
