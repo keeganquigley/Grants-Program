@@ -26,13 +26,13 @@ jobs:
           PERSONAL_ACCESS_TOKEN: ${{ secrets.PERSONAL_ACCESS_TOKEN }}
         with:
           path-to-signatures: 'signatures/version1/cla.json'
-          path-to-document: 'https://github.com/w3f/Grants-Program/blob/master/docs/Support%20Docs/T%26Cs.md'
+          path-to-document: 'https://github.com/keeganquigley/Grants-Program/blob/master/docs/Support%20Docs/T%26Cs.md'
           # branch should not be protected
           branch: 'master'
           allowlist: semuelle,takahser,Noc2,nikw3f,dsm-w3f,keeganquigley,laboon,github-actions[bot]
 
          # the followings are the optional inputs - If the optional inputs are not given, then default values will be taken
-          remote-organization-name: w3f
+          remote-organization-name: keeganquigley
           remote-repository-name: grants-cla
           #create-file-commit-message: 'For example: Creating file for storing CLA Signatures'
           #signed-commit-message: 'For example: $contributorName has signed the CLA in $owner/$repo#$pullRequestNo'
