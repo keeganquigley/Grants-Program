@@ -1,4 +1,4 @@
-name: KYC/KYB Notice on First Approval
+name: KYC KYB Notice on First Approval
 
 on:
   pull_request_review:
