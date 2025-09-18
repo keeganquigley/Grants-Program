@@ -1,0 +1,70 @@
+name: KYC/KYB Notice on First Approval
+
+on:
+  pull_request_review:
+    types: [submitted]
+
+jobs:
+  kyc_kyb_notice:
+    if: github.event.review.state == 'approved'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Check if this is the first approval
+        uses: actions/github-script@v7
+        id: check_first_approval
+        with:
+          script: |
+            const { data: reviews } = await github.rest.pulls.listReviews({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              pull_number: context.issue.number,
+            });
+            
+            // Count approved reviews
+            const approvedReviews = reviews.filter(review => review.state === 'APPROVED');
+            const isFirstApproval = approvedReviews.length === 1;
+            
+            console.log(`Total approved reviews: ${approvedReviews.length}`);
+            console.log(`Is first approval: ${isFirstApproval}`);
+            
+            return isFirstApproval;
+
+      - name: Check if KYC notice already posted
+        if: steps.check_first_approval.outputs.result == 'true'
+        uses: actions/github-script@v7
+        id: check_existing_notice
+        with:
+          script: |
+            const { data: comments } = await github.rest.issues.listComments({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+            });
+            
+            // Check if KYC notice already exists
+            const kycNoticeExists = comments.some(comment => 
+              comment.body.includes('KYC (Know Your Customer)') || 
+              comment.body.includes('KYB (Know Your Business)')
+            );
+            
+            console.log(`KYC notice already exists: ${kycNoticeExists}`);
+            
+            return !kycNoticeExists;
+
+      - name: Post KYC/KYB Notice
+        if: steps.check_first_approval.outputs.result == 'true' && steps.check_existing_notice.outputs.result == 'true'
+        uses: actions/github-script@v7
+        with:
+          script: |
+            const message = `**NOTICE:**
+
+In connection with your participation in an ecosystem initiative organised by Web 3.0 Technologies Foundation, you agree to the processing of your personal data for identity verification, in order to prevent fraud, ensure eligibility, and maintain the integrity of our processes. This processing is based on legitimate interests under the EU General Data Protection Regulation and on justified organisational needs under the Swiss Federal Act on Data Protection. Please follow these links [INTERNAL: INSERT AN APPROPRIATE link depending on flow/program applicable] to complete the [KYC (Know Your Customer)](https://in.sumsub.com/websdk/p/uni_3CUX6wcNsKpHy06k) or [KYB (Know Your Business)](https://in.sumsub.com/websdk/p/uni_tWtMDPwcfhT0aSxi) process. Your information will be handled in line with the [Web3 Foundation Privacy and Cookies Policy](https://web3.foundation/privacy-and-cookies/) and the [Sumsub Privacy Notice](https://sumsub.com/privacy-notice-service/).`;
+
+            await github.rest.issues.createComment({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              issue_number: context.issue.number,
+              body: message
+            });
+
+            console.log('KYC/KYB notice posted successfully');
